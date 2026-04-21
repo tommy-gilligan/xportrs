@@ -1,4 +1,4 @@
-use xportrs::Xpt;
+use xportrs::{Xpt, Agency, Severity, Issue};
 
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -18,7 +18,7 @@ pub struct ColumnData(xportrs::ColumnData);
 
 #[wasm_bindgen]
 impl ColumnData {
-    pub fn new(values: Vec<JsValue>) -> Self {
+    pub fn from_numeric(values: Vec<JsValue>) -> Self {
         Self(xportrs::ColumnData::F64(
             values
                 .iter()
@@ -32,6 +32,21 @@ impl ColumnData {
                 .collect(),
         ))
     }
+
+    pub fn from_string(values: Vec<JsValue>) -> Self {
+        Self(xportrs::ColumnData::String(
+            values
+                .iter()
+                .map(|value| {
+                    if value.is_null_or_undefined() {
+                        None
+                    } else {
+                        value.as_string()
+                    }
+                })
+                .collect(),
+        ))
+    }
 }
 
 #[wasm_bindgen]
@@ -39,6 +54,18 @@ impl Column {
     pub fn new(name: &str, data: ColumnData) -> Self {
         Self(xportrs::Column::new(name, data.0))
     }
+}
+
+#[wasm_bindgen]
+pub fn column_with_label(column: Column, label: &str) -> Column {
+    Column(column.0.with_label(label))
+}
+
+#[wasm_bindgen]
+pub fn dataset_with_label(dataset: Dataset, label: &str) -> Dataset {
+    let mut ds = dataset.0;
+    ds.set_label(label);
+    Dataset(ds)
 }
 
 #[wasm_bindgen]

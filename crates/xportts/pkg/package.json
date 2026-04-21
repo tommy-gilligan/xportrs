@@ -1,0 +1,24 @@
+{
+  "name": "xportts",
+  "description": "CDISC-compliant XPT file generation and parsing library for TypeScript",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rubentalstra/xportrs"
+  },
+  "files": [
+    "xportts_bg.wasm",
+    "xportts.js",
+    "xportts.d.ts"
+  ],
+  "main": "xportts.js",
+  "types": "xportts.d.ts",
+  "keywords": [
+    "sas",
+    "xpt",
+    "xport",
+    "cdisc",
+    "clinical-trials"
+  ]
+}
